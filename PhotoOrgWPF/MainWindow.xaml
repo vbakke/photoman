@@ -1,0 +1,70 @@
+﻿<Window x:Class="PhotoOrgWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:data="clr-namespace:PhotoOrgWPF.models"
+        xmlns:conv="clr-namespace:PhotoOrgWPF.converters"
+        Title="MainWindow" Height="873" Width="908">
+   <Window.Resources>
+      <conv:UriToBitmapConverter x:Key="UriToBitmapConverter" />
+
+      <DataTemplate DataType="{x:Type data:PhotoFolder}">
+         <DockPanel Background="LightGray" HorizontalAlignment="Stretch">
+            <DockPanel DockPanel.Dock="Top" >
+               <Label Content="{Binding Path=FolderPath}" DockPanel.Dock="Left" Margin="0" />
+               <Label Content="{Binding Path=FileCount}" DockPanel.Dock="Right" Margin="0" HorizontalAlignment="Right" Background="LightSlateGray"/>
+            </DockPanel>
+            
+            <!--<ListBox ItemsSource="{Binding Path=Photos}" Background="Blue" />-->
+            <ListView ItemsSource="{Binding Path=Photos}" Background="LightSeaGreen"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                >
+               <ListView.ItemsPanel>
+                  <ItemsPanelTemplate>
+                     <WrapPanel />
+                  </ItemsPanelTemplate>
+               </ListView.ItemsPanel>
+
+            </ListView>
+
+         </DockPanel>
+      </DataTemplate>
+
+      <!--<DataTemplate DataType="{x:Type data:PhotoList}">
+         <ListBox ItemsSource="{Binding }" />
+      </DataTemplate>-->
+
+      <DataTemplate DataType="{x:Type data:Photo}">
+         <StackPanel Orientation="Vertical" Background="RosyBrown">
+            <Image Source="{Binding Path=FullPath, Converter={StaticResource UriToBitmapConverter}}" Width="100" Height="100"/>
+            <Label Content="Filename:"/>
+            <Label Content="{Binding Path=Filename}"/>
+         </StackPanel>
+      </DataTemplate>
+
+   </Window.Resources>
+   
+   
+   <Grid Margin="0,0,2,-21" RenderTransformOrigin="0.696,0.451">
+      <Button x:Name="btnRead" Content="Read" HorizontalAlignment="Left" Margin="432,10,0,0" VerticalAlignment="Top" Width="75" Click="onReadFolder" IsDefault="True" />
+      <Label Content="Bound:" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Width="60"/>
+      <Label x:Name="txtPath" Content="Fixed" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="417"/>
+      <Label x:Name="txtPathBound" Content="{Binding Path=FolderPath}" HorizontalAlignment="Left" Margin="123,14,0,0" VerticalAlignment="Top" Width="304" Height="25"/>
+      <Label x:Name="txtPathBound_Copy" Content="{Binding Path=Length}" HorizontalAlignment="Left" Margin="61,13,0,0" VerticalAlignment="Top" Width="27" Height="25"/>
+
+      <!--Button Content="{Binding}" Margin="446,66,26,313" /-->
+      <ListView Margin="10,66,10,30" ItemsSource="{Binding}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                >
+         <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+               <WrapPanel Background="LightBlue" />
+            </ItemsPanelTemplate>
+         </ListView.ItemsPanel>
+         
+      </ListView>
+
+
+      <Button x:Name="btnOpenExplorer" Content="Explorer" HorizontalAlignment="Left" Margin="432,35,0,0" VerticalAlignment="Top" Width="75" Click="btnOpenExplorer_Click"/>
+
+   </Grid>
+</Window>

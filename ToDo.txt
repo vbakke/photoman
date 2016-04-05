@@ -1,0 +1,18 @@
+ToDo - Visual
+=============
+-Display thumbnails to read
+-Make Templates
+-Read sub folders
+
+-Fix inconsistent scaling in listview
+
+Merge - ToDo
+============
+-Identify duplicates
+	-Make hashes, and store them
+	-Filename
+	-EXIF Program Name & Date Taken
+-Get Width & Height
+
+Done
+====
