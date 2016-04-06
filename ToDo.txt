@@ -1,18 +1,47 @@
-ToDo - Visual
-=============
--Display thumbnails to read
--Make Templates
--Read sub folders
+ToDo - PhotoMan
+===============
 
+Visuals
+=======
+-Display only some Photos of large folders
+
+-Sort A-Z, DateTaken
+-Design Source panel
 -Fix inconsistent scaling in listview
 
-Merge - ToDo
+Merge
 ============
--Identify duplicates
+-Define Source
+-Store Source
+-Read Source
+	-Subfolders
+-Auto split
+	- Per date, if more than 3
+
+-ImportDB
 	-Make hashes, and store them
 	-Filename
 	-EXIF Program Name & Date Taken
 -Get Width & Height
 
+-Identify duplicates
+
+
+-Delete photos
+	-Mark photo as deleted in ImportDB
+	-Identify previous deleted
+
+VIDEOS
+======
+-Import videos just like anything else
+-DateTaken and ImgSize might break, others...???
+
+
+Advanced features
+=================
+-Adjust time
+
+
 Done
 ====
+-Display Photo Taken

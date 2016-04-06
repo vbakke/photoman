@@ -41,6 +41,7 @@ namespace PhotoOrgWPF
 
             imagePath = myImagePaths[useIndex];
             myPhoto = new Photo(@"C:\Users\Vegard\Documents\Dropbox\Temp\iPhotoMerge\Cato\Email\2 - Sommerfuglpark.JPG");
+            this.Language = System.Windows.Markup.XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag); 
             this.DataContext = photoFolders;
             //this.DataContext = myPhoto;
         }

@@ -36,8 +36,8 @@
       <DataTemplate DataType="{x:Type data:Photo}">
          <StackPanel Orientation="Vertical" Background="RosyBrown">
             <Image Source="{Binding Path=FullPath, Converter={StaticResource UriToBitmapConverter}}" Width="100" Height="100"/>
-            <Label Content="Filename:"/>
-            <Label Content="{Binding Path=Filename}"/>
+            <TextBox Text="{Binding Path=Filename}"/>
+            <TextBox Text="{Binding Path=DateTaken, StringFormat=g}"/>
          </StackPanel>
       </DataTemplate>
 
@@ -46,6 +46,8 @@
    
    <Grid Margin="0,0,2,-21" RenderTransformOrigin="0.696,0.451">
       <Button x:Name="btnRead" Content="Read" HorizontalAlignment="Left" Margin="432,10,0,0" VerticalAlignment="Top" Width="75" Click="onReadFolder" IsDefault="True" />
+      <Button x:Name="btnOpenExplorer" Content="Explorer" HorizontalAlignment="Left" Margin="432,35,0,0" VerticalAlignment="Top" Width="75" Click="btnOpenExplorer_Click"/>
+
       <Label Content="Bound:" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Width="60"/>
       <Label x:Name="txtPath" Content="Fixed" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="417"/>
       <Label x:Name="txtPathBound" Content="{Binding Path=FolderPath}" HorizontalAlignment="Left" Margin="123,14,0,0" VerticalAlignment="Top" Width="304" Height="25"/>
@@ -64,7 +66,11 @@
       </ListView>
 
 
-      <Button x:Name="btnOpenExplorer" Content="Explorer" HorizontalAlignment="Left" Margin="432,35,0,0" VerticalAlignment="Top" Width="75" Click="btnOpenExplorer_Click"/>
+      <!--<StackPanel Orientation="Vertical" Background="Blue">
+         <Image Source="{Binding Path=FullPath, Converter={StaticResource UriToBitmapConverter}}" Width="100" Height="100"/>
+         <TextBlock Background="LightBlue" Text="Filename:"/>
+         <TextBox Background="AliceBlue" Text="Binding Path=Filename" Margin="0,0,0,-1"/>
+      </StackPanel>-->
 
    </Grid>
 </Window>
