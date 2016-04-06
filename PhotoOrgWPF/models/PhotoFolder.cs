@@ -11,6 +11,9 @@ namespace PhotoOrgWPF.models
 {
     class PhotoFolder : INotifyPropertyChanged
     {
+        protected const int MaxViewCount = 7;
+        protected const int CachedViewCount = 3;
+
         protected string _folderName;
         public string FolderPath
         {
@@ -24,16 +27,17 @@ namespace PhotoOrgWPF.models
 
         public int FileCount
         {
-            get { return (Photos==null) ? 0 : Photos.Count; }
+            get { return (_photosDisk == null) ? 0 : _photosDisk.Count; }
         }
 
-        protected PhotoList _photos = new PhotoList();
+        protected PhotoList _photosDisk = new PhotoList();
+        protected PhotoList _photosView = new PhotoList();
         public PhotoList Photos
         {
-            get { return _photos; }
+            get { return _photosView; }
             set
             {
-                _photos = value;
+                _photosView = value;
                 OnPropertyChanged("Photos");
             }
         }
@@ -54,16 +58,25 @@ namespace PhotoOrgWPF.models
         }
 
         public void LoadFolder(string folderPath) {
-
             this.FolderPath = folderPath;
             string[] paths = Directory.GetFiles(folderPath, "*.jpg");
             foreach (string path in paths)
             {
-                Photos.Add(new Photo(path));
+                _photosDisk.Add(new Photo(path));
             }
+
+            if (_photosDisk.Count <= MaxViewCount)
+                _photosDisk.CopyTo(_photosView);
+            else
+                _photosDisk.CopyFirstAndLastTo(_photosView, CachedViewCount);
+
+
             OnPropertyChanged("Photos");
             OnPropertyChanged("FileCount");
-
+        }
+        public void ViewAllPhotos()
+        {
+            _photosDisk.CopyTo(_photosView);
         }
 
         protected void OnPropertyChanged(string name)
@@ -80,6 +93,27 @@ namespace PhotoOrgWPF.models
     {
         public PhotoList()
         {
+        }
+        public void CopyTo(ObservableCollection<Photo> target)
+        {
+            target.Clear();
+            foreach (var photo in this)
+            {
+                target.Add(photo);
+            }            
+        }
+        public void CopyFirstAndLastTo(ObservableCollection<Photo> target, int count)
+        {
+            target.Clear();
+            for (int i = 0; i < count; i++)
+            {
+                target.Add(this[i]);
+            }
+            //target.Add(new Photo(""));
+            for (int i = 1; i <= count; i++)
+            {
+                target.Add(this[ this.Count - i ]);
+            }
         }
     }
 

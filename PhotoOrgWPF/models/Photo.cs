@@ -26,19 +26,19 @@ namespace PhotoOrgWPF.models
         }
 
         // Filename
-        protected string _filename;
-        public string Filename
+        protected string _photoname;
+        public string Photoname
         {
-            get { return _filename; }
+            get { return _photoname; }
             set
             {
-                _filename = value;
-                OnPropertyChanged("Filename");
+                _photoname = value;
+                OnPropertyChanged("Photoname");
             }
         }
 
         // DateTaken
-        protected DateTime _dateTaken = DateTime.Now;
+        protected DateTime _dateTaken;
         public DateTime DateTaken
         {
             get { return _dateTaken; }
@@ -57,20 +57,27 @@ namespace PhotoOrgWPF.models
         public Photo(string fullPath)
         {
             this.FullPath = fullPath;
-            this.Filename = Path.GetFileName(fullPath);
+            this.Photoname = Path.GetFileNameWithoutExtension(fullPath);
             this.DateTaken = GetDateTakenFromImage(fullPath);
             
         }
 
         public static DateTime GetDateTakenFromImage(string path)
         {
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            if (path == null || path == "")
             {
-                using (Image myImage = Image.FromStream(fs, false, false))
+                return DateTime.MinValue;
+            }
+            else
+            {
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
-                    PropertyItem propItem = myImage.GetPropertyItem(0x9003);
-                    string dateTaken = re.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-                    return DateTime.Parse(dateTaken);
+                    using (Image myImage = Image.FromStream(fs, false, false))
+                    {
+                        PropertyItem propItem = myImage.GetPropertyItem(0x9003);
+                        string dateTaken = re.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                        return DateTime.Parse(dateTaken);
+                    }
                 }
             }
         }

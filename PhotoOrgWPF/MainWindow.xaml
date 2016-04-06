@@ -35,9 +35,9 @@
 
       <DataTemplate DataType="{x:Type data:Photo}">
          <StackPanel Orientation="Vertical" Background="RosyBrown">
-            <Image Source="{Binding Path=FullPath, Converter={StaticResource UriToBitmapConverter}}" Width="100" Height="100"/>
-            <TextBox Text="{Binding Path=Filename}"/>
-            <TextBox Text="{Binding Path=DateTaken, StringFormat=g}"/>
+            <Image Source="{Binding Path=FullPath, Converter={StaticResource UriToBitmapConverter}}" Width="120" Height="67"/>
+            <TextBox Text="{Binding Path=Photoname}"/>
+            <TextBox Text="{Binding Path=DateTaken, StringFormat=g}" IsReadOnly="True"/>
          </StackPanel>
       </DataTemplate>
 

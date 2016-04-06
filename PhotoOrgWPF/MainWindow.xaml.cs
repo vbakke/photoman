@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PhotoOrgWPF
 {
@@ -51,8 +52,16 @@ namespace PhotoOrgWPF
             
             //lstImages.DataContext = photoFolder;
             //txtPathBound.DataContext = photoFolder;
+            photoFolders.Clear();
+
             photoFolders.Add(new PhotoFolder(myImagePaths[2]));
+            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
             photoFolders.Add(new PhotoFolder(myImagePaths[3]));
+            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null); 
+            photoFolders.Add(new PhotoFolder(myImagePaths[0]));
+            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
+            photoFolders.Add(new PhotoFolder(myImagePaths[1]));
+            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
 
             txtPathBound_Copy.DataContext = photoFolders[0].Photos;
 
