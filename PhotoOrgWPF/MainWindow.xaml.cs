@@ -58,8 +58,8 @@ namespace PhotoOrgWPF
             Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
             photoFolders.Add(new PhotoFolder(myImagePaths[3]));
             Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null); 
-            photoFolders.Add(new PhotoFolder(myImagePaths[0]));
-            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
+            //photoFolders.Add(new PhotoFolder(myImagePaths[0]));
+            //Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
             photoFolders.Add(new PhotoFolder(myImagePaths[1]));
             Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
 
@@ -74,6 +74,18 @@ namespace PhotoOrgWPF
         private void btnOpenExplorer_Click(object sender, RoutedEventArgs e)
         {
             Process.Start(imagePath);
+        }
+
+        private void onViewFullFolderClick(object sender, RoutedEventArgs e)
+        {
+            if (sender != null)
+            {
+                PhotoFolder folder = (PhotoFolder) ((Button)sender).DataContext;
+                folder.ViewAllPhotos();
+            }
+
+            
+
         }
 
     }

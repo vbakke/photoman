@@ -3,10 +3,8 @@ ToDo - PhotoMan
 
 Visuals
 =======
--Display only some Photos of large folders
-	-Display only first and last photo
-	-Insert visual button in the middle
 
+-Improve 'ThreeLittleDots'
 -Sort A-Z, DateTaken
 -Design Source panel
 -Fix inconsistent scaling in listview
@@ -47,3 +45,6 @@ Advanced features
 Done
 ====
 -Display Photo Taken
+-Display only some Photos of large folders
+	-Display only first and last photo
+	-Insert visual button in the middle

@@ -74,9 +74,31 @@ namespace PhotoOrgWPF.models
                 {
                     using (Image myImage = Image.FromStream(fs, false, false))
                     {
-                        PropertyItem propItem = myImage.GetPropertyItem(0x9003);
-                        string dateTaken = re.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-                        return DateTime.Parse(dateTaken);
+                        PropertyItem propItem = null;
+                        try
+                        {
+                            propItem = myImage.GetPropertyItem(0x9003);
+                        }
+                        catch (ArgumentException)
+                        {
+                            try
+                            {
+                                propItem = myImage.GetPropertyItem(603);
+                            }
+                            catch (ArgumentException)
+                            {  
+                                // pass
+                            }
+                        }
+                        if (propItem != null)
+                        {
+                            string dateTaken = re.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                            return DateTime.Parse(dateTaken);
+                        }
+                        else
+                        {
+                            return File.GetLastWriteTime(path);
+                        }
                     }
                 }
             }

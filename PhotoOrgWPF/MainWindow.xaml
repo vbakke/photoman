@@ -11,7 +11,11 @@
          <DockPanel Background="LightGray" HorizontalAlignment="Stretch">
             <DockPanel DockPanel.Dock="Top" >
                <Label Content="{Binding Path=FolderPath}" DockPanel.Dock="Left" Margin="0" />
-               <Label Content="{Binding Path=FileCount}" DockPanel.Dock="Right" Margin="0" HorizontalAlignment="Right" Background="LightSlateGray"/>
+               <Button Content="{Binding Path=FileCount}" 
+                       DockPanel.Dock="Right" Padding="20,0" HorizontalAlignment="Right" 
+                       Background="LightSlateGray" 
+                       IsEnabled="{Binding Path=IsNotFullView}"
+                       Click="onViewFullFolderClick"/>
             </DockPanel>
             
             <!--<ListBox ItemsSource="{Binding Path=Photos}" Background="Blue" />-->

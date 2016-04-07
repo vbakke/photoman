@@ -11,9 +11,10 @@ namespace PhotoOrgWPF.models
 {
     class PhotoFolder : INotifyPropertyChanged
     {
-        protected const int MaxViewCount = 7;
-        protected const int CachedViewCount = 3;
+        protected const int MAX_VIEW_COUNT = 7;
+        protected const int LIMITED_VIEW_COUNT = 3;
 
+        protected static Photo _spacerPhoto = null;
         protected string _folderName;
         public string FolderPath
         {
@@ -23,11 +24,6 @@ namespace PhotoOrgWPF.models
                 _folderName = value;
                 OnPropertyChanged("FolderPath");
             }
-        }
-
-        public int FileCount
-        {
-            get { return (_photosDisk == null) ? 0 : _photosDisk.Count; }
         }
 
         protected PhotoList _photosDisk = new PhotoList();
@@ -42,6 +38,21 @@ namespace PhotoOrgWPF.models
             }
         }
 
+
+        public int FileCount
+        {
+            get { return (_photosDisk == null) ? 0 : _photosDisk.Count; }
+        }
+
+        public bool IsNotFullView
+        {
+            get { return (_photosDisk == null || _photosView == null) ? true : (_photosView.Count != _photosDisk.Count); }
+        }
+
+
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public PhotoFolder()
@@ -49,6 +60,10 @@ namespace PhotoOrgWPF.models
 
         public PhotoFolder(string folderPath)
         {
+            if (_spacerPhoto == null)
+            {
+                _spacerPhoto = new Photo(@"C:\Users\Vegard\Documents\src\GIT\PhotoMan\PhotoOrgWPF\images\ThreeLittleDots.jpg");
+            }
             this.Photos.Clear();
 
             if (folderPath!=null && folderPath.Length > 0)
@@ -65,18 +80,21 @@ namespace PhotoOrgWPF.models
                 _photosDisk.Add(new Photo(path));
             }
 
-            if (_photosDisk.Count <= MaxViewCount)
+            if (_photosDisk.Count <= MAX_VIEW_COUNT)
                 _photosDisk.CopyTo(_photosView);
             else
-                _photosDisk.CopyFirstAndLastTo(_photosView, CachedViewCount);
+                _photosDisk.CopyFirstAndLastTo(_photosView, LIMITED_VIEW_COUNT, _spacerPhoto);
 
 
             OnPropertyChanged("Photos");
             OnPropertyChanged("FileCount");
+            OnPropertyChanged("IsNotFullView");
         }
         public void ViewAllPhotos()
         {
             _photosDisk.CopyTo(_photosView);
+            OnPropertyChanged("Photos");
+            OnPropertyChanged("IsNotFullView");
         }
 
         protected void OnPropertyChanged(string name)
@@ -104,12 +122,17 @@ namespace PhotoOrgWPF.models
         }
         public void CopyFirstAndLastTo(ObservableCollection<Photo> target, int count)
         {
+            CopyFirstAndLastTo(target, count, null);
+        }
+        public void CopyFirstAndLastTo(ObservableCollection<Photo> target, int count, Photo spacerPhoto)
+        {
             target.Clear();
             for (int i = 0; i < count; i++)
             {
                 target.Add(this[i]);
             }
-            //target.Add(new Photo(""));
+            if (spacerPhoto != null)
+                target.Add(spacerPhoto);
             for (int i = 1; i <= count; i++)
             {
                 target.Add(this[ this.Count - i ]);
