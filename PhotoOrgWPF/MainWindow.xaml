@@ -7,19 +7,23 @@
    <Window.Resources>
       <conv:UriToBitmapConverter x:Key="UriToBitmapConverter" />
 
+      <!-- PhotoFolder - Dispaying folder content -->
       <DataTemplate DataType="{x:Type data:PhotoFolder}">
          <DockPanel Background="LightGray" HorizontalAlignment="Stretch">
             <DockPanel DockPanel.Dock="Top" >
                <Label Content="{Binding Path=FolderPath}" DockPanel.Dock="Left" Margin="0" />
+               <Button Content="Explorer" 
+                       DockPanel.Dock="Right" Padding="20,0" HorizontalAlignment="Right" 
+                       Click="onOpenExplorerClick"/>
                <Button Content="{Binding Path=FileCount}" 
                        DockPanel.Dock="Right" Padding="20,0" HorizontalAlignment="Right" 
                        Background="LightSlateGray" 
                        IsEnabled="{Binding Path=IsNotFullView}"
                        Click="onViewFullFolderClick"/>
             </DockPanel>
-            
-            <!--<ListBox ItemsSource="{Binding Path=Photos}" Background="Blue" />-->
-            <ListView ItemsSource="{Binding Path=Photos}" Background="LightSeaGreen"
+
+            <!--<ListBox ItemsSource="{Binding Path=PhotosView}" Background="Blue" />-->
+            <ListView ItemsSource="{Binding Path=PhotosView}" Background="LightSeaGreen"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                 >
                <ListView.ItemsPanel>
@@ -33,10 +37,9 @@
          </DockPanel>
       </DataTemplate>
 
-      <!--<DataTemplate DataType="{x:Type data:PhotoList}">
-         <ListBox ItemsSource="{Binding }" />
-      </DataTemplate>-->
 
+
+      <!-- Photo - Displays each photo -->
       <DataTemplate DataType="{x:Type data:Photo}">
          <StackPanel Orientation="Vertical" Background="RosyBrown">
             <Image Source="{Binding Path=FullPath, Converter={StaticResource UriToBitmapConverter}}" Width="120" Height="67"/>
@@ -46,11 +49,10 @@
       </DataTemplate>
 
    </Window.Resources>
-   
-   
+
+
    <Grid Margin="0,0,2,-21" RenderTransformOrigin="0.696,0.451">
       <Button x:Name="btnRead" Content="Read" HorizontalAlignment="Left" Margin="432,10,0,0" VerticalAlignment="Top" Width="75" Click="onReadFolder" IsDefault="True" />
-      <Button x:Name="btnOpenExplorer" Content="Explorer" HorizontalAlignment="Left" Margin="432,35,0,0" VerticalAlignment="Top" Width="75" Click="btnOpenExplorer_Click"/>
 
       <Label Content="Bound:" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Width="60"/>
       <Label x:Name="txtPath" Content="Fixed" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="417"/>
@@ -58,7 +60,7 @@
       <Label x:Name="txtPathBound_Copy" Content="{Binding Path=Length}" HorizontalAlignment="Left" Margin="61,13,0,0" VerticalAlignment="Top" Width="27" Height="25"/>
 
       <!--Button Content="{Binding}" Margin="446,66,26,313" /-->
-      <ListView Margin="10,66,10,30" ItemsSource="{Binding}"
+      <ListView Margin="186,66,10,30" ItemsSource="{Binding}"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                 >
          <ListView.ItemsPanel>
@@ -66,8 +68,24 @@
                <WrapPanel Background="LightBlue" />
             </ItemsPanelTemplate>
          </ListView.ItemsPanel>
-         
+
       </ListView>
+      
+      <!-- Import buttons -->
+      <ListBox Name="lstImport"
+               HorizontalAlignment="Left" Height="767" Margin="10,66,0,0" 
+               HorizontalContentAlignment="Stretch"
+               VerticalAlignment="Top" Width="171"
+               ItemsSource="{Binding}">
+         <ListBox.ItemTemplate>
+            <DataTemplate>
+               <Button Content="{Binding DisplayName}" 
+                       Click="onImportFolderClick"
+                       />
+            </DataTemplate>
+         </ListBox.ItemTemplate>
+      </ListBox>
+      <Label x:Name="lblIsWorking" Content="Working... Please wait..." HorizontalAlignment="Center" Margin="352,34,316,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="20"/>
 
 
       <!--<StackPanel Orientation="Vertical" Background="Blue">

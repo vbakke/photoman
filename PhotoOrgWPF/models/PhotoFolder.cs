@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,33 +10,34 @@ using System.Threading.Tasks;
 
 namespace PhotoOrgWPF.models
 {
-    class PhotoFolder : INotifyPropertyChanged
+    public class PhotoFolder : ObservableClass
     {
+        // --- Constants ---
         protected const int MAX_VIEW_COUNT = 7;
         protected const int LIMITED_VIEW_COUNT = 3;
 
+        // --- Memebers ---
         protected static Photo _spacerPhoto = null;
-        protected string _folderName;
+        protected string _folderPath;
         public string FolderPath
         {
-            get { return _folderName; }
+            get { return _folderPath; }
             set
             {
-                _folderName = value;
+                _folderPath = value;
                 OnPropertyChanged("FolderPath");
             }
         }
 
         protected PhotoList _photosDisk = new PhotoList();
+        public PhotoList PhotosDisk
+        {
+            get { return _photosDisk; }
+        }
         protected PhotoList _photosView = new PhotoList();
-        public PhotoList Photos
+        public PhotoList PhotosView
         {
             get { return _photosView; }
-            set
-            {
-                _photosView = value;
-                OnPropertyChanged("Photos");
-            }
         }
 
 
@@ -53,25 +55,33 @@ namespace PhotoOrgWPF.models
 
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        // --- Constructors ---
         public PhotoFolder()
-            : this(null) { }
+        {
+            // Set static variable if undefined
+            if (_spacerPhoto == null)
+                _spacerPhoto = new Photo(@"C:\Users\Vegard\Documents\src\GIT\PhotoMan\PhotoOrgWPF\images\ThreeLittleDots.jpg");
+        }
 
         public PhotoFolder(string folderPath)
+            : this()
         {
-            if (_spacerPhoto == null)
-            {
-                _spacerPhoto = new Photo(@"C:\Users\Vegard\Documents\src\GIT\PhotoMan\PhotoOrgWPF\images\ThreeLittleDots.jpg");
-            }
-            this.Photos.Clear();
 
             if (folderPath!=null && folderPath.Length > 0)
                 LoadFolder(folderPath);
             else
                 FolderPath = "";
         }
+        public PhotoFolder(string folderPath, PhotoList photos)
+            : this()
+        {
+            _folderPath = folderPath;
+            _photosDisk.Extend(photos);
+            ViewShortListOnly();
+        }
 
+
+        // --- Public Methods ---
         public void LoadFolder(string folderPath) {
             this.FolderPath = folderPath;
             string[] paths = Directory.GetFiles(folderPath, "*.jpg");
@@ -80,11 +90,8 @@ namespace PhotoOrgWPF.models
                 _photosDisk.Add(new Photo(path));
             }
 
-            if (_photosDisk.Count <= MAX_VIEW_COUNT)
-                _photosDisk.CopyTo(_photosView);
-            else
-                _photosDisk.CopyFirstAndLastTo(_photosView, LIMITED_VIEW_COUNT, _spacerPhoto);
 
+            ViewShortListOnly();
 
             OnPropertyChanged("Photos");
             OnPropertyChanged("FileCount");
@@ -97,34 +104,61 @@ namespace PhotoOrgWPF.models
             OnPropertyChanged("IsNotFullView");
         }
 
-        protected void OnPropertyChanged(string name)
+        public void ViewShortListOnly()
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
+            if (_photosDisk==null)
+                return;
+
+            if (_photosDisk.Count <= MAX_VIEW_COUNT)
+                _photosDisk.CopyTo(_photosView);
+            else
+                _photosDisk.CopyFirstAndLastTo(_photosView, LIMITED_VIEW_COUNT, _spacerPhoto);
+
+
         }
     }
 
-    class PhotoList : ObservableCollection<Photo>
+
+
+
+    public class PhotoList : ObservableCollection<Photo>
     {
         public PhotoList()
         {
         }
-        public void CopyTo(ObservableCollection<Photo> target)
+        public PhotoList(List<Photo> source)
+        {
+            this.Extend(source);
+        }
+        public PhotoList(PhotoList source)
+        {
+            this.Extend(source);
+        }
+
+        public void CopyTo(PhotoList target)
         {
             target.Clear();
-            foreach (var photo in this)
-            {
-                target.Add(photo);
-            }            
+            target.Extend(this);
         }
-        public void CopyFirstAndLastTo(ObservableCollection<Photo> target, int count)
+        public void Extend(PhotoList source)
+        {
+            foreach (var photo in source)
+            {
+                this.Add(photo);
+            }
+        }
+        public void Extend(List<Photo> source)
+        {
+            foreach (var photo in source)
+            {
+                this.Add(photo);
+            }
+        }
+        public void CopyFirstAndLastTo(PhotoList target, int count)
         {
             CopyFirstAndLastTo(target, count, null);
         }
-        public void CopyFirstAndLastTo(ObservableCollection<Photo> target, int count, Photo spacerPhoto)
+        public void CopyFirstAndLastTo(PhotoList target, int count, Photo spacerPhoto)
         {
             target.Clear();
             for (int i = 0; i < count; i++)
@@ -138,6 +172,7 @@ namespace PhotoOrgWPF.models
                 target.Add(this[ this.Count - i ]);
             }
         }
+
     }
 
 }

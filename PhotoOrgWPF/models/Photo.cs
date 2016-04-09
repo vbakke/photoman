@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace PhotoOrgWPF.models
 {
-    class Photo : INotifyPropertyChanged
+    public class Photo : ObservableClass
     {
+        // --- Members ---
         // FullPath
         protected string _fullPath;
         public string FullPath
@@ -50,10 +51,10 @@ namespace PhotoOrgWPF.models
         }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private static Regex re = new Regex(":");
 
+        // --- Constructors ---
         public Photo(string fullPath)
         {
             this.FullPath = fullPath;
@@ -62,6 +63,7 @@ namespace PhotoOrgWPF.models
             
         }
 
+        // --- Public methods ---
         public static DateTime GetDateTakenFromImage(string path)
         {
             if (path == null || path == "")
@@ -104,14 +106,6 @@ namespace PhotoOrgWPF.models
             }
         }
 
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
-        }
 
     }
 }

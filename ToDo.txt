@@ -4,6 +4,9 @@ ToDo - PhotoMan
 Visuals
 =======
 
+-Fix and refactor: File Paths after splitting
+-Fix: Explorer 
+
 -Improve 'ThreeLittleDots'
 -Sort A-Z, DateTaken
 -Design Source panel
@@ -11,12 +14,10 @@ Visuals
 
 Merge
 ============
--Define Source
+(-Define Source
 -Store Source
--Read Source
-	-Subfolders
--Auto split
-	- Per date, if more than 3
+)
+-Read Subfolders
 
 -ImportDB
 	-Make hashes, and store them
@@ -30,6 +31,11 @@ Merge
 -Delete photos
 	-Mark photo as deleted in ImportDB
 	-Identify previous deleted
+
+-Learn SQLite
+-Design data 
+
+
 
 VIDEOS
 ======
@@ -48,3 +54,5 @@ Done
 -Display only some Photos of large folders
 	-Display only first and last photo
 	-Insert visual button in the middle
+-Auto split
+	- Per date, if more than 3
