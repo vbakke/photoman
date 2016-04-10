@@ -26,7 +26,7 @@ namespace PhotoOrgWPF.controller
         public void LoadFolder(SourceFolder sourceFolder)
         {
             this._sourceFolder = sourceFolder;
-            _photoFolders.Clear();
+            //_photoFolders.Clear();
             string srcPath = _sourceFolder.Path;
             _photoFolders.Add(new PhotoFolder(srcPath));
                     
@@ -34,15 +34,20 @@ namespace PhotoOrgWPF.controller
 
         public void AutoSplitFolders()
         {
-            for (int i = 0; i < _photoFolders.Count; i++)
+            int i = 0;
+            while (i < _photoFolders.Count)
             {
-                AutoSplitFolder(i);
+                int newFolders = AutoSplitFolder(i);
+                i += newFolders;
             }
         }
 
-        protected void AutoSplitFolder(int index)
+        protected int AutoSplitFolder(int index)
         {
             PhotoFolder mainFolder = _photoFolders[index];
+            _photoFolders.RemoveAt(index);
+
+
             Dictionary<DateTime, List<Photo>> photos = new Dictionary<DateTime, List<Photo>>();
             DateTime date;
 
@@ -52,69 +57,85 @@ namespace PhotoOrgWPF.controller
             {
                 date = photo.DateTaken.Date;
                 if (!photos.ContainsKey(date))
-                {
-                    //Debug.WriteLine("Creating Hash key: " + date.ToShortDateString());
                     photos[date] = new List<Photo>();
-                }
                 photos[date].Add(photo);
-                //Debug.WriteLine("Added '"+photo.Photoname+"' to "+date.ToString("dd.MM.yyyy")+", "+photos[date].Count+" photos");
-
             }
 
             // Split into subfolders
-            PhotoList photoList;
             PhotoFolder newFolder;
             List<PhotoFolder> newFolderList = new List<PhotoFolder>();
-            var keys = photos.Keys.ToList();
+            List<DateTime> keys = photos.Keys.ToList();
             keys.Sort();
-            // Debug
-            foreach (DateTime tmpDate in keys)
-                Debug.WriteLine("- Date " + tmpDate.ToShortDateString() + ": " + photos[tmpDate].Count);
+            //* -- Debug --
+            for (int i=0; i<keys.Count; i++)
+                Debug.WriteLine("- #" + i + " Date " + keys[i].ToShortDateString() + ": " + photos[keys[i]].Count);
+            // */
 
-            
-            int start = -1;
-            string subfolder;
+            int newFolderCount = 0;
+            int start = 0;
             for (int end = 0; end < keys.Count; end++)
             {
                 date = keys[end];
-                Debug.WriteLine(" - Date " + date.ToShortDateString() + ": " + photos[date].Count);
                 if (photos[date].Count >= MIN_LIMIT_AUTOSPLIT)
                 {
-                    // Store photoes up til this date, in one folder
-                    if (end > 0)
+                    // Store photos up til this date, in one folder
+                    if (end > start)
                     {
-                        photoList = new PhotoList();
-                        for (int i = start + 1; i < end; i++)
-                        {
-                            Debug.WriteLine("Extending "+date.ToShortDateString()+" with "+photos[keys[i]].Count+" photos");
-                            photoList.Extend(photos[keys[i]]);
-                        }
-                        subfolder = ((DateTime)keys[end-1]).ToShortDateString();
-                        if (start < 0)
-                            start = 0;
-                        if (start+1 < end-1)
-                            subfolder = ((DateTime)keys[start]).ToShortDateString() + " - " + subfolder;
-                        newFolder = new PhotoFolder(subfolder, photoList);
-                        newFolderList.Add(newFolder);
+                        newFolder = CreateSubfolder(photos, keys, start, end);
+                        _photoFolders.Insert(index + newFolderCount, newFolder);
+                        newFolderCount++;
+                        //newFolderList.Add(newFolder);
                     }
                     // Store big folder in its own folder
-                    Debug.WriteLine("Storing " + keys[end].ToShortDateString() + " with " + photos[keys[end]].Count + " photos on its own");
-                    subfolder = date.ToShortDateString();
-                    photoList = new PhotoList(photos[keys[end]]);
-                    newFolder = new PhotoFolder(subfolder, photoList); 
-                    newFolderList.Add(newFolder);
+                    //Debug.WriteLine("Storing " + keys[end].ToShortDateString() + " with " + photos[keys[end]].Count + " photos on its own");
+                    newFolder = CreateSubfolder(photos, keys, end, end+1);
+                    _photoFolders.Insert(index + newFolderCount, newFolder);
+                    newFolderCount++;
+                    //newFolderList.Add(newFolder);
+
                     // Prepare next round
-                    start = end;
+                    start = end + 1;
                 }
             }
-
-            Debug.WriteLine("Split folder in " + newFolderList.Count + " dates");
-            _photoFolders.RemoveAt(index);
-            for (int i=0; i<newFolderList.Count; i++) {
-                _photoFolders.Insert(index+i, newFolderList[i]);
+            // Store remaining photos in last folder
+            if (start < keys.Count)
+            {
+                newFolder = CreateSubfolder(photos, keys, start, keys.Count);
+                _photoFolders.Insert(index + newFolderCount, newFolder);
+                newFolderCount++;
+                //newFolderList.Add(newFolder);
             }
-            
+            Debug.WriteLine("Split folder in " + newFolderCount + " dates");
+            for (int i=0; i<newFolderList.Count; i++) {
+                
+            }
 
+            return newFolderCount;
+        }
+
+        protected PhotoFolder CreateSubfolder(Dictionary<DateTime, List<Photo>> photos, List<DateTime> keys, int start, int end)
+        {
+
+            PhotoFolder newFolder = new PhotoFolder();
+            PhotoList photoList = new PhotoList();
+
+            // Join photos into one list
+            for (int i = start; i < end; i++)
+            {
+                //Debug.WriteLine("Extending "+keys[i].ToShortDateString()+" with "+photos[keys[i]].Count+" photos");
+                photoList.Extend(photos[keys[i]]);
+            }
+
+            // Create folder name
+            string foldername = ((DateTime)keys[end-1]).ToShortDateString();
+            if (start+1 < end-1)
+                foldername = ((DateTime)keys[start]).ToShortDateString() + " - " + foldername;
+
+
+            Debug.WriteLine("Creating '" + foldername + "' with " + photoList.Count + " photos");
+            newFolder = new PhotoFolder(foldername, photoList);
+
+            return newFolder;
         }
 
     }

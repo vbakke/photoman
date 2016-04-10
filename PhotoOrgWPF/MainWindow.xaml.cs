@@ -34,7 +34,7 @@ namespace PhotoOrgWPF
 
 
         private  ObservableCollection<PhotoFolder> photoFolders = new ObservableCollection<PhotoFolder>();
-        private  ObservableCollection<SourceFolder> sources = new ObservableCollection<SourceFolder>();
+        private  ObservableCollection<SourceFolder> sourceFolders = new ObservableCollection<SourceFolder>();
 
         protected PhotosController controller;
 
@@ -47,8 +47,8 @@ namespace PhotoOrgWPF
             
              controller = new PhotosController(photoFolders);
 
-            LoadSourceFolders(sources);
-            lstImport.DataContext = sources;
+            LoadSourceFolders(sourceFolders);
+            lstImport.DataContext = sourceFolders;
 
             ShowIsBusy(false);
         }
@@ -63,15 +63,16 @@ namespace PhotoOrgWPF
 
             // Setup Buffer
             SourceFolder buffer = new SourceFolder("Buffer", @"C:\Users\Vegard\Documents\Dropbox\Temp\iPhotoMerge\Buffer", final);
-            sources.Insert(0, buffer);
 
             // Setup Sources
             foreach (var path in myImagePaths)
             {
                 string name = Path.GetFileName(path);
                 SourceFolder source = new SourceFolder(name, path, buffer);
-                sources.Insert(0, source);
+                sources.Add(source);
             }
+
+            sources.Add(buffer);
 
 
         }
@@ -79,26 +80,25 @@ namespace PhotoOrgWPF
         // -- Debug - Kladd
         private void onReadFolder(object sender, RoutedEventArgs e)
         {
-            
-            //lstImages.DataContext = photoFolder;
-            //txtPathBound.DataContext = photoFolder;
+            ShowIsBusy(true);
             photoFolders.Clear();
 
-            photoFolders.Add(new PhotoFolder(myImagePaths[2]));
-            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
-            photoFolders.Add(new PhotoFolder(myImagePaths[3]));
-            Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null); 
-            //photoFolders.Add(new PhotoFolder(myImagePaths[0]));
-            //Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
-            photoFolders.Add(new PhotoFolder(myImagePaths[1]));
-            
+            controller.LoadFolder(sourceFolders[2]);
+            controller.AutoSplitFolders();
+            UpdateView();
+            controller.LoadFolder(sourceFolders[3]);
+            controller.AutoSplitFolders();
+            UpdateView();
+            /*
+            controller.LoadFolder(sourceFolders[0]);
+            controller.AutoSplitFolders();
+            UpdateView();
+            // */
+            controller.LoadFolder(sourceFolders[1]);
+            controller.AutoSplitFolders();
+            UpdateView();
 
-            txtPathBound_Copy.DataContext = photoFolders[0].PhotosView;
-
-
-            txtPath.Content = "(" + photoFolders[0].PhotosView.Count + ") " + imagePath;
-
-            txtPathBound_Copy.GetBindingExpression(Label.ContentProperty).UpdateTarget();
+            ShowIsBusy(false);
         }
         //------
 
@@ -111,6 +111,7 @@ namespace PhotoOrgWPF
                 if (sourceFolder!=null)
                 {
                     ShowIsBusy(true);
+                    photoFolders.Clear();
                     controller.LoadFolder(sourceFolder);
                     controller.AutoSplitFolders();
                     ShowIsBusy(false);
@@ -126,7 +127,7 @@ namespace PhotoOrgWPF
                 PhotoFolder folder = (PhotoFolder)button.DataContext;
                 if (folder != null)
                 {
-                    Process.Start(folder.FolderPath);
+                    Process.Start(folder.FolderName);
                 }
             }
 
@@ -156,7 +157,7 @@ namespace PhotoOrgWPF
             UpdateView();
         }
 
-        protected void UpdateView()
+        public void UpdateView()
         {
             Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null); 
         }

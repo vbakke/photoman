@@ -9,21 +9,20 @@
 
       <!-- PhotoFolder - Dispaying folder content -->
       <DataTemplate DataType="{x:Type data:PhotoFolder}">
-         <DockPanel Background="LightGray" HorizontalAlignment="Stretch">
+         <DockPanel HorizontalAlignment="Stretch">
             <DockPanel DockPanel.Dock="Top" >
-               <Label Content="{Binding Path=FolderPath}" DockPanel.Dock="Left" Margin="0" />
-               <Button Content="Explorer" 
-                       DockPanel.Dock="Right" Padding="20,0" HorizontalAlignment="Right" 
-                       Click="onOpenExplorerClick"/>
+               <Label Content="{Binding Path=FolderName}" FontWeight="Bold" DockPanel.Dock="Left" Margin="0" />
                <Button Content="{Binding Path=FileCount}" 
-                       DockPanel.Dock="Right" Padding="20,0" HorizontalAlignment="Right" 
-                       Background="LightSlateGray" 
+                       DockPanel.Dock="Right" Padding="20,0" Margin="0,1" HorizontalAlignment="Right" 
                        IsEnabled="{Binding Path=IsNotFullView}"
                        Click="onViewFullFolderClick"/>
+               <Button Content="Explorer" 
+                       DockPanel.Dock="Right" Padding="20,0" Margin="2,1" HorizontalAlignment="Right" 
+                       Click="onOpenExplorerClick"/>
             </DockPanel>
 
             <!--<ListBox ItemsSource="{Binding Path=PhotosView}" Background="Blue" />-->
-            <ListView ItemsSource="{Binding Path=PhotosView}" Background="LightSeaGreen"
+            <ListView ItemsSource="{Binding Path=PhotosView}" 
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                 >
                <ListView.ItemsPanel>
@@ -41,7 +40,7 @@
 
       <!-- Photo - Displays each photo -->
       <DataTemplate DataType="{x:Type data:Photo}">
-         <StackPanel Orientation="Vertical" Background="RosyBrown">
+         <StackPanel Orientation="Vertical" >
             <Image Source="{Binding Path=FullPath, Converter={StaticResource UriToBitmapConverter}}" Width="120" Height="67"/>
             <TextBox Text="{Binding Path=Photoname}"/>
             <TextBox Text="{Binding Path=DateTaken, StringFormat=g}" IsReadOnly="True"/>
@@ -54,10 +53,8 @@
    <Grid Margin="0,0,2,-21" RenderTransformOrigin="0.696,0.451">
       <Button x:Name="btnRead" Content="Read" HorizontalAlignment="Left" Margin="432,10,0,0" VerticalAlignment="Top" Width="75" Click="onReadFolder" IsDefault="True" />
 
-      <Label Content="Bound:" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Width="60"/>
-      <Label x:Name="txtPath" Content="Fixed" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="417"/>
-      <Label x:Name="txtPathBound" Content="{Binding Path=FolderPath}" HorizontalAlignment="Left" Margin="123,14,0,0" VerticalAlignment="Top" Width="304" Height="25"/>
-      <Label x:Name="txtPathBound_Copy" Content="{Binding Path=Length}" HorizontalAlignment="Left" Margin="61,13,0,0" VerticalAlignment="Top" Width="27" Height="25"/>
+      <Label x:Name="txtStatus" Content="Status bar" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="417"/>
+      <Label x:Name="txtFolderCount" Content="{Binding Path=Count}" HorizontalAlignment="Left" Margin="10,17,0,0" VerticalAlignment="Top" Width="88"/>
 
       <!--Button Content="{Binding}" Margin="446,66,26,313" /-->
       <ListView Margin="186,66,10,30" ItemsSource="{Binding}"
@@ -65,7 +62,7 @@
                 >
          <ListView.ItemsPanel>
             <ItemsPanelTemplate>
-               <WrapPanel Background="LightBlue" />
+               <WrapPanel  />
             </ItemsPanelTemplate>
          </ListView.ItemsPanel>
 

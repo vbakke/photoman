@@ -16,24 +16,27 @@ namespace PhotoOrgWPF.models
         protected const int MAX_VIEW_COUNT = 7;
         protected const int LIMITED_VIEW_COUNT = 3;
 
+    #region members
         // --- Memebers ---
         protected static Photo _spacerPhoto = null;
-        protected string _folderPath;
-        public string FolderPath
+        protected string _folderName;
+        public string FolderName
         {
-            get { return _folderPath; }
+            get { return _folderName; }
             set
             {
-                _folderPath = value;
+                _folderName = value;
                 OnPropertyChanged("FolderPath");
             }
         }
 
+        // List of Photos on the disk
         protected PhotoList _photosDisk = new PhotoList();
         public PhotoList PhotosDisk
         {
             get { return _photosDisk; }
         }
+        // Abbreviated list of Photos, to be displayed
         protected PhotoList _photosView = new PhotoList();
         public PhotoList PhotosView
         {
@@ -51,6 +54,7 @@ namespace PhotoOrgWPF.models
             get { return (_photosDisk == null || _photosView == null) ? true : (_photosView.Count != _photosDisk.Count); }
         }
 
+    #endregion
 
 
 
@@ -70,12 +74,12 @@ namespace PhotoOrgWPF.models
             if (folderPath!=null && folderPath.Length > 0)
                 LoadFolder(folderPath);
             else
-                FolderPath = "";
+                FolderName = "";
         }
-        public PhotoFolder(string folderPath, PhotoList photos)
+        public PhotoFolder(string folderName, PhotoList photos)
             : this()
         {
-            _folderPath = folderPath;
+            _folderName = folderName;
             _photosDisk.Extend(photos);
             ViewShortListOnly();
         }
@@ -83,7 +87,7 @@ namespace PhotoOrgWPF.models
 
         // --- Public Methods ---
         public void LoadFolder(string folderPath) {
-            this.FolderPath = folderPath;
+            this.FolderName = Path.GetFileName(folderPath);
             string[] paths = Directory.GetFiles(folderPath, "*.jpg");
             foreach (string path in paths)
             {

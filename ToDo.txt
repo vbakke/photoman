@@ -4,8 +4,10 @@ ToDo - PhotoMan
 Visuals
 =======
 
--Fix and refactor: File Paths after splitting
+-Show PhotoFolders.Count 
 -Fix: Explorer 
+-Show Large Photo when Clicked on
+-Go to next/previous large photo when arrow right/left
 
 -Improve 'ThreeLittleDots'
 -Sort A-Z, DateTaken
