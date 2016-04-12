@@ -127,7 +127,8 @@ namespace PhotoOrgWPF
                 PhotoFolder folder = (PhotoFolder)button.DataContext;
                 if (folder != null)
                 {
-                    Process.Start(folder.FolderName);
+                    string path = Path.GetDirectoryName(folder.PhotosDisk[0].FullPath);
+                    Process.Start(path);
                 }
             }
 
