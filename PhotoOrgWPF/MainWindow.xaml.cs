@@ -32,9 +32,10 @@ namespace PhotoOrgWPF
 
         string imagePath = null;
 
+        private MainData mainData = new MainData();
 
-        private FolderList photoFolders = new FolderList();
-        private  ObservableCollection<SourceFolder> sourceFolders = new ObservableCollection<SourceFolder>();
+        private FolderList photoFolders = new FolderList();                                                    // ToDo: Move into MainData
+        private  ObservableCollection<SourceFolder> sourceFolders = new ObservableCollection<SourceFolder>();  // ToDo: Move into MainData
 
         protected PhotosController photosController;
         protected ImportController importController;
@@ -53,6 +54,8 @@ namespace PhotoOrgWPF
             lstImport.DataContext = sourceFolders;
 
             ShowIsBusy(false);
+            pnlDuplicates.Visibility = System.Windows.Visibility.Collapsed;
+            pnlDuplicates.DataContext = mainData.duplicates;
         }
 
         private void LoadSourceFolders(ObservableCollection<SourceFolder> sources)
@@ -112,8 +115,10 @@ namespace PhotoOrgWPF
                 SourceFolder sourceFolder = (SourceFolder)button.DataContext;
                 if (sourceFolder!=null)
                 {
-                    PhotoList originals = new PhotoList();
-                    PhotoList duplicates = new PhotoList();
+                    mainData.duplicates.Clear();
+                    PhotoList originals = mainData.duplicates.OrgList;
+                    PhotoList duplicates = mainData.duplicates.DupList;
+                    
 
                     ShowIsBusy(true);
                     photoFolders.Clear();
@@ -123,6 +128,7 @@ namespace PhotoOrgWPF
                     // Show Duplicates
                     if (duplicates.Count > 0)
                     {
+                        pnlDuplicates.Visibility = System.Windows.Visibility.Visible;
                         Debug.WriteLine("Found duplicates:");
                         for (int i = 0; i < duplicates.Count; i++)
                         {
@@ -132,9 +138,10 @@ namespace PhotoOrgWPF
                             Debug.WriteLine(msg);
                         }
                     }
-
-                    // 
-                    photosController.AutoSplitFolders();
+                    else
+                    {
+                        photosController.AutoSplitFolders();
+                    }
                     ShowIsBusy(false);
                 }
             }
