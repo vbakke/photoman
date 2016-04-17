@@ -53,9 +53,11 @@ namespace PhotoOrgWPF
             LoadSourceFolders(sourceFolders);
             lstImport.DataContext = sourceFolders;
 
-            ShowIsBusy(false);
             pnlDuplicates.Visibility = System.Windows.Visibility.Collapsed;
             pnlDuplicates.DataContext = mainData.duplicates;
+            pnlDuplicates.Controller = importController;
+
+            ShowIsBusy(false);
         }
 
         private void LoadSourceFolders(ObservableCollection<SourceFolder> sources)

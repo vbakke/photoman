@@ -70,12 +70,12 @@
          </ListBox.ItemsPanel>
 
       </ListBox>
-      <views:UserControl1 x:Name="pnlDuplicates" 
+      <views:DuplicatesView x:Name="pnlDuplicates" 
                           Background="AliceBlue" 
                           Visibility="Visible" Margin="186,71,10,30"
                           >
          
-      </views:UserControl1>
+      </views:DuplicatesView>
       <!-- Import buttons -->
       <ListBox Name="lstImport"
                HorizontalAlignment="Left" Height="767" Margin="10,66,0,0" 

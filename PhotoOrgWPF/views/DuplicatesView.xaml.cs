@@ -1,4 +1,7 @@
-﻿using System;
+﻿using PhotoOrgWPF.controller;
+using PhotoOrgWPF.models;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,9 +21,11 @@ namespace PhotoOrgWPF.views
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class DuplicatesView : UserControl
     {
-        public UserControl1()
+        public ImportController Controller { get; set; }
+
+        public DuplicatesView()
         {
             InitializeComponent();
         }
@@ -28,6 +33,22 @@ namespace PhotoOrgWPF.views
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        private void btnExclude_Click(object sender, RoutedEventArgs e)
+        {
+            IList items = (IList)lstIncluded.SelectedItems;
+            PhotoList included = ((Duplicates)DataContext).OrgList;
+            PhotoList excluded = ((Duplicates)DataContext).DupList;
+            Controller.ExcludeIncludedPhotos(items, included, excluded);
+        }
+
+        private void btnInclude_Click(object sender, RoutedEventArgs e)
+        {
+            System.Collections.IList items = (System.Collections.IList)lstExcluded.SelectedItems;
+            PhotoList included = ((Duplicates)DataContext).OrgList;
+            PhotoList excluded = ((Duplicates)DataContext).DupList;
+            Controller.IncludeExcludedPhotos(items, included, excluded);
         }
     }
 }
