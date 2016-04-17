@@ -11,6 +11,7 @@ Merge
 
 -Identify duplicates
 -Show duplicates
+
 -Select to ignore them, og import them
 
 
@@ -26,6 +27,7 @@ Merge
 -Get Width & Height, replace smaller originals with larger duplicates (?)
 
 *Pri 3*
+-Fix: Duplicate: false positive on Time when Name is consecutive (hi-burst-photos)
 -Learn SQLite
 -Design data 
 -Store Hash data

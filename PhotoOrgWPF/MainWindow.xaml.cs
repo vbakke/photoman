@@ -83,6 +83,13 @@ namespace PhotoOrgWPF
         }
 
         // -- Debug - Kladd
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            mainData.duplicates.Clear();
+            photoFolders.Clear();
+            importController.Clear();
+
+        }
         private void onReadFolder(object sender, RoutedEventArgs e)
         {
             ShowIsBusy(true);

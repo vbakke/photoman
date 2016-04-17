@@ -24,5 +24,10 @@ namespace PhotoOrgWPF.views
         {
             InitializeComponent();
         }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = System.Windows.Visibility.Collapsed;
+        }
     }
 }

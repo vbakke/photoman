@@ -20,6 +20,11 @@ namespace PhotoOrgWPF.controller
             _photoFolders = photoFolders;            
         }
 
+        public void Clear()
+        {
+            _photonameHash.Clear();
+            _datetakenHash.Clear();
+        }
 
         public void RegisterNewPhotos(FolderList newFolders, ref PhotoList originals, ref PhotoList duplicates)
         {
