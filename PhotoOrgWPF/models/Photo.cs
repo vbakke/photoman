@@ -117,10 +117,7 @@ namespace PhotoOrgWPF.models
                         }
                         else
                         {
-                            string dateStr = File.GetLastWriteTime(path).ToString("yyyy:MM:dd hh:mm:ss");
-                            string dateStr1 = File.GetLastWriteTime(path).ToString("yyyy:MM:dd hh:mm:ss");
-                            string dateStr2 = File.GetLastWriteTime(path).ToString("yyyy:mm:dd hh:MM:ss");
-                            return File.GetLastWriteTime(path).ToString("yyyy:MM:dd hh:mm:ss");
+                            return File.GetLastWriteTime(path).ToString("yyyy:MM:dd HH:mm:ss");
                         }
                     }
                 }
