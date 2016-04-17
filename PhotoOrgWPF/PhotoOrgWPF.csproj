@@ -62,6 +62,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="controller\ImportController.cs" />
     <Compile Include="controller\PhotosController.cs" />
     <Compile Include="converters\UriToBitmapConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">

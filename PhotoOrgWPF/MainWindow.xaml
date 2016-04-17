@@ -57,16 +57,16 @@
       <Label x:Name="txtFolderCount" Content="{Binding Path=Count}" HorizontalAlignment="Left" Margin="10,17,0,0" VerticalAlignment="Top" Width="88"/>
 
       <!--Button Content="{Binding}" Margin="446,66,26,313" /-->
-      <ListView Margin="186,66,10,30" ItemsSource="{Binding}"
+      <ListBox Margin="186,66,10,30" ItemsSource="{Binding}"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                 >
-         <ListView.ItemsPanel>
+         <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
                <WrapPanel  />
             </ItemsPanelTemplate>
-         </ListView.ItemsPanel>
+         </ListBox.ItemsPanel>
 
-      </ListView>
+      </ListBox>
       
       <!-- Import buttons -->
       <ListBox Name="lstImport"

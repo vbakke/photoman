@@ -12,12 +12,12 @@ namespace PhotoOrgWPF.controller
     public class PhotosController
     {
         public const int MIN_LIMIT_AUTOSPLIT = 5;
-        protected ObservableCollection<PhotoFolder> _photoFolders;
+        protected FolderList _photoFolders;
         protected SourceFolder _sourceFolder;
 
 
 
-        public PhotosController(ObservableCollection<PhotoFolder> photoFolders)
+        public PhotosController(FolderList photoFolders)
         {
             _photoFolders = photoFolders;            
         }

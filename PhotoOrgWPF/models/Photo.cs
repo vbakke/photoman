@@ -64,11 +64,29 @@ namespace PhotoOrgWPF.models
         }
 
         // --- Public methods ---
+        public string GetDateTakenString()
+        {
+            return Photo.GetDateTakenStringFromImage(this.FullPath);
+        }
+        
+
+
         public static DateTime GetDateTakenFromImage(string path)
+        {
+            string dateString = Photo.GetDateTakenStringFromImage(path);
+            if (dateString != null && dateString != "")
+            {
+                string dateTaken = re.Replace(dateString, "-", 2);
+                return DateTime.Parse(dateTaken);
+            }
+            return DateTime.MinValue;
+        }
+
+        public static string GetDateTakenStringFromImage(string path)
         {
             if (path == null || path == "")
             {
-                return DateTime.MinValue;
+                return "";
             }
             else
             {
@@ -85,21 +103,24 @@ namespace PhotoOrgWPF.models
                         {
                             try
                             {
-                                propItem = myImage.GetPropertyItem(603);
+                                propItem = myImage.GetPropertyItem(306);
                             }
                             catch (ArgumentException)
-                            {  
+                            {
                                 // pass
                             }
                         }
+
                         if (propItem != null)
                         {
-                            string dateTaken = re.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-                            return DateTime.Parse(dateTaken);
+                            return Encoding.UTF8.GetString(propItem.Value);
                         }
                         else
                         {
-                            return File.GetLastWriteTime(path);
+                            string dateStr = File.GetLastWriteTime(path).ToString("yyyy:MM:dd hh:mm:ss");
+                            string dateStr1 = File.GetLastWriteTime(path).ToString("yyyy:MM:dd hh:mm:ss");
+                            string dateStr2 = File.GetLastWriteTime(path).ToString("yyyy:mm:dd hh:MM:ss");
+                            return File.GetLastWriteTime(path).ToString("yyyy:MM:dd hh:mm:ss");
                         }
                     }
                 }

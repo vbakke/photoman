@@ -179,4 +179,10 @@ namespace PhotoOrgWPF.models
 
     }
 
+
+    public class FolderList : ObservableCollection<PhotoFolder>
+    {
+
+    }
+
 }

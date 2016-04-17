@@ -33,10 +33,11 @@ namespace PhotoOrgWPF
         string imagePath = null;
 
 
-        private  ObservableCollection<PhotoFolder> photoFolders = new ObservableCollection<PhotoFolder>();
+        private FolderList photoFolders = new FolderList();
         private  ObservableCollection<SourceFolder> sourceFolders = new ObservableCollection<SourceFolder>();
 
-        protected PhotosController controller;
+        protected PhotosController photosController;
+        protected ImportController importController;
 
         public MainWindow()
         {
@@ -44,8 +45,9 @@ namespace PhotoOrgWPF
 
             this.Language = System.Windows.Markup.XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag); 
             this.DataContext = photoFolders;
-            
-             controller = new PhotosController(photoFolders);
+
+            photosController = new PhotosController(photoFolders);
+            importController = new ImportController(photoFolders);
 
             LoadSourceFolders(sourceFolders);
             lstImport.DataContext = sourceFolders;
@@ -83,19 +85,19 @@ namespace PhotoOrgWPF
             ShowIsBusy(true);
             photoFolders.Clear();
 
-            controller.LoadFolder(sourceFolders[2]);
-            controller.AutoSplitFolders();
+            photosController.LoadFolder(sourceFolders[2]);
+            photosController.AutoSplitFolders();
             UpdateView();
-            controller.LoadFolder(sourceFolders[3]);
-            controller.AutoSplitFolders();
+            photosController.LoadFolder(sourceFolders[3]);
+            photosController.AutoSplitFolders();
             UpdateView();
             /*
             controller.LoadFolder(sourceFolders[0]);
             controller.AutoSplitFolders();
             UpdateView();
             // */
-            controller.LoadFolder(sourceFolders[1]);
-            controller.AutoSplitFolders();
+            photosController.LoadFolder(sourceFolders[1]);
+            photosController.AutoSplitFolders();
             UpdateView();
 
             ShowIsBusy(false);
@@ -110,10 +112,29 @@ namespace PhotoOrgWPF
                 SourceFolder sourceFolder = (SourceFolder)button.DataContext;
                 if (sourceFolder!=null)
                 {
+                    PhotoList originals = new PhotoList();
+                    PhotoList duplicates = new PhotoList();
+
                     ShowIsBusy(true);
                     photoFolders.Clear();
-                    controller.LoadFolder(sourceFolder);
-                    controller.AutoSplitFolders();
+                    photosController.LoadFolder(sourceFolder);
+                    importController.RegisterNewPhotos(photoFolders, ref originals, ref duplicates);
+
+                    // Show Duplicates
+                    if (duplicates.Count > 0)
+                    {
+                        Debug.WriteLine("Found duplicates:");
+                        for (int i = 0; i < duplicates.Count; i++)
+                        {
+                            string msg = " - " + duplicates[i].Photoname;
+                            if (i < originals.Count)
+                                msg += " is duplicate of " + originals[i].Photoname;
+                            Debug.WriteLine(msg);
+                        }
+                    }
+
+                    // 
+                    photosController.AutoSplitFolders();
                     ShowIsBusy(false);
                 }
             }

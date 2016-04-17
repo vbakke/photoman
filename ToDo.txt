@@ -1,42 +1,51 @@
 ToDo - PhotoMan
 ===============
 
+
+
+Merge
+============
+
+*Pri 1*
+#ImportDB
+
+-Identify duplicates
+-Show duplicates
+-Select to ignore them, og import them
+
+
+*Pri 2*
+-Read Subfolders
+-Rename folderName
+-Transfer photos to sourceFolder.Target
+
++Delete photos
+	-Mark photo as deleted in ImportDB
+	-Identify previous deleted
+
+-Get Width & Height, replace smaller originals with larger duplicates (?)
+
+*Pri 3*
+-Learn SQLite
+-Design data 
+-Store Hash data
+-Refine Duplicates and tell whether name og dateTaken was the same (?)
+
+(-Define Source
+-Store Source
+)
+
+
 Visuals
 =======
 
--Show PhotoFolders.Count 
--Fix: Explorer 
--Show Large Photo when Clicked on
++Show Large Photo when Clicked on
 -Go to next/previous large photo when arrow right/left
 
 -Improve 'ThreeLittleDots'
 -Sort A-Z, DateTaken
 -Design Source panel
 -Fix inconsistent scaling in listview
-
-Merge
-============
-(-Define Source
--Store Source
-)
--Read Subfolders
-
--ImportDB
-	-Make hashes, and store them
-	-Filename
-	-EXIF Program Name & Date Taken
--Get Width & Height
-
--Identify duplicates
-
-
--Delete photos
-	-Mark photo as deleted in ImportDB
-	-Identify previous deleted
-
--Learn SQLite
--Design data 
-
 
 
 VIDEOS
@@ -58,3 +67,4 @@ Done
 	-Insert visual button in the middle
 -Auto split
 	- Per date, if more than 3
+-Show PhotoFolders.Count 
