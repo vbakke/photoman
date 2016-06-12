@@ -87,7 +87,7 @@ namespace PhotoOrgWPF
         // -- Debug - Kladd
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            mainData.duplicates.Clear();
+            mainData.duplicates.Clear(); // ToDO: Move to Controller
             photoFolders.Clear();
             importController.Clear();
 

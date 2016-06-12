@@ -32,8 +32,9 @@
 
 
          <ListView Name="lstIncluded" ItemsSource="{Binding Path=OrgList}" 
-                    Grid.Row="0" Grid.Column="0" 
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                   Grid.Row="0" Grid.Column="0"   
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                   MouseDoubleClick="lstIncluded_MouseDoubleClick"
                 >
             <ListView.ItemsPanel>
                <ItemsPanelTemplate>
@@ -43,8 +44,9 @@
          </ListView>
 
          <ListView Name="lstExcluded" ItemsSource="{Binding Path=DupList}" 
-                    Grid.Row="0" Grid.Column="1" 
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                   Grid.Row="0" Grid.Column="1" 
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                   MouseDoubleClick="lstExcluded_MouseDoubleClick"
                 >
             <ListView.ItemsPanel>
                <ItemsPanelTemplate>

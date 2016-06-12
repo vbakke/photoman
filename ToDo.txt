@@ -11,8 +11,10 @@ Merge
 
 -Identify duplicates
 -Show duplicates
+-Select to ignore duplicates, or import them
 
--Select to ignore them, og import them
+- ToDo: When Close Duplicates:
+	Run AutoSplit
 
 
 *Pri 2*
@@ -31,7 +33,7 @@ Merge
 -Learn SQLite
 -Design data 
 -Store Hash data
--Refine Duplicates and tell whether name og dateTaken was the same (?)
+-Refine: Duplicates: Indeacte whether it was the name or the dateTaken was the same (?)
 
 (-Define Source
 -Store Source

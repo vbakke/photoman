@@ -57,6 +57,20 @@ namespace PhotoOrgWPF.controller
             }
         }
 
+        public void RemovePhotosFromFolder(PhotoList delete)
+        {
+            foreach (PhotoFolder folder in _photoFolders)
+            {
+                foreach (Photo photo in delete)
+                {
+                    if (folder.Contains(photo))
+                    {
+                        folder.RemovePhoto(photo);
+                    }
+                }
+            }
+        }
+
         public void ExcludeIncludedPhotos(System.Collections.IList photos, PhotoList included, PhotoList excluded)
         {
             IncludeExcludedPhotos(photos, excluded, included); // swap included and excluded

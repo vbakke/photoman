@@ -117,8 +117,17 @@ namespace PhotoOrgWPF.models
                 _photosDisk.CopyTo(_photosView);
             else
                 _photosDisk.CopyFirstAndLastTo(_photosView, LIMITED_VIEW_COUNT, _spacerPhoto);
+        }
 
+        public bool Contains(Photo photo)
+        {
+            return _photosDisk.Contains(photo);
+        }
 
+        public void RemovePhoto(Photo photo)
+        {
+            _photosDisk.Remove(photo);
+            _photosView.Remove(photo);
         }
     }
 

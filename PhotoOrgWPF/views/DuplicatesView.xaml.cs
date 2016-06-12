@@ -32,23 +32,46 @@ namespace PhotoOrgWPF.views
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            Controller.RemovePhotosFromFolder(((Duplicates)DataContext).DupList);
             this.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private void btnExclude_Click(object sender, RoutedEventArgs e)
         {
-            IList items = (IList)lstIncluded.SelectedItems;
-            PhotoList included = ((Duplicates)DataContext).OrgList;
-            PhotoList excluded = ((Duplicates)DataContext).DupList;
-            Controller.ExcludeIncludedPhotos(items, included, excluded);
+            ExcludeSelected();
         }
 
         private void btnInclude_Click(object sender, RoutedEventArgs e)
         {
-            System.Collections.IList items = (System.Collections.IList)lstExcluded.SelectedItems;
+            IncludeSelected();
+        }
+
+        private void lstIncluded_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ExcludeSelected();
+        }
+        private void lstExcluded_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            IncludeSelected();
+        }
+
+
+        private void IncludeSelected()
+        {
+            IList items = (IList)lstExcluded.SelectedItems;
             PhotoList included = ((Duplicates)DataContext).OrgList;
             PhotoList excluded = ((Duplicates)DataContext).DupList;
+         
             Controller.IncludeExcludedPhotos(items, included, excluded);
+        }
+
+        private void ExcludeSelected()
+        {
+            IList items = (IList)lstIncluded.SelectedItems;
+            PhotoList included = ((Duplicates)DataContext).OrgList;
+            PhotoList excluded = ((Duplicates)DataContext).DupList;
+
+            Controller.ExcludeIncludedPhotos(items, included, excluded);
         }
     }
 }
