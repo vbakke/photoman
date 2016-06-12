@@ -55,7 +55,8 @@ namespace PhotoOrgWPF
 
             pnlDuplicates.Visibility = System.Windows.Visibility.Collapsed;
             pnlDuplicates.DataContext = mainData.duplicates;
-            pnlDuplicates.Controller = importController;
+            pnlDuplicates.photosController = photosController;
+            pnlDuplicates.importController = importController;
 
             ShowIsBusy(false);
         }

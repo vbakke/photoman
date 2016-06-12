@@ -11,7 +11,7 @@ namespace PhotoOrgWPF.controller
 {
     public class PhotosController
     {
-        public const int MIN_LIMIT_AUTOSPLIT = 5;
+        public const int MIN_LIMIT_AUTOSPLIT = 2;
         protected FolderList _photoFolders;
         protected SourceFolder _sourceFolder;
 
@@ -55,6 +55,7 @@ namespace PhotoOrgWPF.controller
             Debug.WriteLine("=== Splitting " + mainFolder.FileCount + " photos for " + _sourceFolder.DisplayName + " ===");
             foreach (var photo in mainFolder.PhotosDisk)
             {
+                Debug.WriteLine("Looking at " + photo.Photoname);
                 date = photo.DateTaken.Date;
                 if (!photos.ContainsKey(date))
                     photos[date] = new List<Photo>();

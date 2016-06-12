@@ -23,7 +23,8 @@ namespace PhotoOrgWPF.views
     /// </summary>
     public partial class DuplicatesView : UserControl
     {
-        public ImportController Controller { get; set; }
+        public PhotosController photosController { get; set; }
+        public ImportController importController { get; set; }
 
         public DuplicatesView()
         {
@@ -32,8 +33,9 @@ namespace PhotoOrgWPF.views
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            Controller.RemovePhotosFromFolder(((Duplicates)DataContext).DupList);
+            importController.RemovePhotosFromFolder(((Duplicates)DataContext).DupList);
             this.Visibility = System.Windows.Visibility.Collapsed;
+            photosController.AutoSplitFolders();
         }
 
         private void btnExclude_Click(object sender, RoutedEventArgs e)
@@ -62,7 +64,7 @@ namespace PhotoOrgWPF.views
             PhotoList included = ((Duplicates)DataContext).OrgList;
             PhotoList excluded = ((Duplicates)DataContext).DupList;
          
-            Controller.IncludeExcludedPhotos(items, included, excluded);
+            importController.IncludeExcludedPhotos(items, included, excluded);
         }
 
         private void ExcludeSelected()
@@ -71,7 +73,7 @@ namespace PhotoOrgWPF.views
             PhotoList included = ((Duplicates)DataContext).OrgList;
             PhotoList excluded = ((Duplicates)DataContext).DupList;
 
-            Controller.ExcludeIncludedPhotos(items, included, excluded);
+            importController.ExcludeIncludedPhotos(items, included, excluded);
         }
     }
 }

@@ -12,13 +12,10 @@ namespace PhotoOrgWPF.models
         public PhotoList OrgList { get; set; }
         public PhotoList DupList { get; set; }
 
-        public string TESTNAME { get; set; }
-
         public Duplicates()
         {
             OrgList = new PhotoList();
             DupList = new PhotoList();
-            TESTNAME = "VEGRARD 3";
         }
 
         public void Clear()
